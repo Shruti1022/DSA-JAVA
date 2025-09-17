@@ -14,9 +14,8 @@ class Solution {
                      hm.put(original, replacement);
                 else
                 return false;
-            }else{
-                char mappedCharacter = hm.get(original);
-                if(mappedCharacter != replacement)
+            }else{ 
+                if(hm.get(original) != replacement)
                 return false;
             }
         }
