@@ -1,20 +1,35 @@
 class Solution {
+    private static final String[] keypad = {
+        "",     
+        "",     
+        "abc",  
+        "def",  
+        "ghi",  
+        "jkl",  
+        "mno",  
+        "pqrs", 
+        "tuv",  
+        "wxyz"  
+    };
+
     public List<String> letterCombinations(String digits) {
-        LinkedList<String> output_arr = new LinkedList();
-        if(digits.length() == 0) return output_arr;
-        output_arr.add("");
+        List<String> result = new ArrayList<>();
+        if (digits == null || digits.length() == 0) return result;
 
-        String[] map = new String[] {"0","1","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        backtrack(digits, 0, "", result);
+        return result;
+    }
 
-        for(int i = 0; i<digits.length(); i++){
-            int index = Character.getNumericValue(digits.charAt(i));
-            while(output_arr.peek().length() == i){
-                String permutation = output_arr.remove();
-                for(char c: map[index].toCharArray()){
-                    output_arr.add(permutation + c);
-                }
-            }
+    private void backtrack(String digits, int index, String current, List<String> result) {
+        if (index == digits.length()) {
+            result.add(current);
+            return;
         }
-        return output_arr;
+
+        String letters = keypad[digits.charAt(index) - '0'];
+
+        for (char c : letters.toCharArray()) {
+            backtrack(digits, index + 1, current + c, result);
+        }
     }
 }
