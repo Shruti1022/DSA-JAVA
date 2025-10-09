@@ -3,7 +3,6 @@ class Solution {
          if (num1.equals("0") || num2.equals("0")) {
             return "0";
         }
-        
         int m = num1.length();
         int n = num2.length();
         int[] result = new int[m + n];
@@ -21,15 +20,14 @@ class Solution {
         }
         
         StringBuilder sb = new StringBuilder();
-        int idx = 0;
+        int index = 0;
         
-        while (idx < result.length && result[idx] == 0) {
-            idx++;
+        while (index < result.length && result[index] == 0) {
+            index++;
         }
-        for (; idx < result.length; idx++) {
-            sb.append(result[idx]);
+        for (; index < result.length; index++) {
+            sb.append(result[index]);
         }
-        
         return sb.length() == 0 ? "0" : sb.toString();
     }
 }
