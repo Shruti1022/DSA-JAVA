@@ -1,34 +1,32 @@
 class Solution {
     public boolean exist(char[][] board, String word) {
-        int m = board.length;
-        if (m == 0) return false;
-        int n = board[0].length;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (dfs(board, word, i, j, 0))
-                    return true;
+        char[] wordArr = word.toCharArray();
+
+        for(int i=0; i< board.length; i++){
+            for(int j = 0; j< board[0].length; j++){
+                if(board[i][j] == wordArr[0] && exists(board, i, j, wordArr, 0))
+                return true;
             }
         }
         return false;
     }
 
-    private boolean dfs(char[][] board, String word, int i, int j, int index) {
-        if (index == word.length())
-            return true;           
-        if (i < 0 || i >= board.length || 
-            j < 0 || j >= board[0].length || 
-            board[i][j] != word.charAt(index))
-            return false;
+    public boolean exists(char[][] board, int i, int j, char[] word, int idx){
+        if(i<0 || i>= board.length || j<0 || j>=board[0].length || board[i][j] == '*' || board[i][j] != word[idx]) return false;
 
-        char temp = board[i][j];
-        board[i][j] = '#';         
+        if(idx == word.length -1) return true;
 
-        boolean found = dfs(board, word, i+1, j,   index+1)
-                     || dfs(board, word, i-1, j,   index+1)
-                     || dfs(board, word, i,   j+1, index+1)
-                     || dfs(board, word, i,   j-1, index+1);
+        char ch = board[i][j];
+        board[i][j] = '*';
 
-        board[i][j] = temp;          
-        return found;
+        boolean res =exists(board, i+1, j, word, idx+1) ||
+                     exists(board, i-1, j, word, idx+1) ||
+                     exists(board, i, j+1, word, idx+1) ||
+                     exists(board, i, j-1, word, idx+1);
+
+        board[i][j] = ch;
+
+        return res;
+
     }
 }
