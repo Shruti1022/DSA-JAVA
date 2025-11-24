@@ -3,65 +3,39 @@ class Solution {
          int m = board.length;
         int n = board[0].length;
 
-        int total = m * n;
-        int dummy = total;  // extra node
+        for (int i = 0; i < m; i++) {
+            dfs(board, i, 0);
+            dfs(board, i, n - 1);
+        }
+        for (int j = 0; j < n; j++) {
+            dfs(board, 0, j);
+            dfs(board, m - 1, j);
+        }
 
-        UnionFind uf = new UnionFind(total + 1);
-
-        // Helper to convert (i,j) → index
-        int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-
-        // Step 1: Union border O's with dummy
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 if (board[i][j] == 'O') {
-                    int idx = i * n + j;
-
-                    if (i == 0 || i == m - 1 || j == 0 || j == n - 1) {
-                        uf.union(idx, dummy);
-                    }
-
-                    // Union with neighbors
-                    for (int[] d : dirs) {
-                        int r = i + d[0], c = j + d[1];
-                        if (r >= 0 && c >= 0 && r < m && c < n && board[r][c] == 'O') {
-                            uf.union(idx, r * n + c);
-                        }
-                    }
-                }
-            }
-        }
-
-        // Step 2: Flip safely based on dummy connectivity
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (board[i][j] == 'O' && !uf.connected(i * n + j, dummy)) {
                     board[i][j] = 'X';
+                } else if (board[i][j] == '#') {
+                    board[i][j] = 'O';
                 }
             }
         }
     }
 
-    // ---------------- DSU Class ----------------
-    class UnionFind {
-        int[] parent;
+    private void dfs(char[][] board, int i, int j) {
+        int m = board.length;
+        int n = board[0].length;
 
-        UnionFind(int size) {
-            parent = new int[size];
-            for (int i = 0; i < size; i++) parent[i] = i;
+        if (i < 0 || j < 0 || i >= m || j >= n || board[i][j] != 'O') {
+            return;
         }
 
-        int find(int x) {
-            if (parent[x] != x) parent[x] = find(parent[x]);
-            return parent[x];
-        }
+        board[i][j] = '#';  
 
-        void union(int a, int b) {
-            parent[find(a)] = find(b);
-        }
-
-        boolean connected(int a, int b) {
-            return find(a) == find(b);
-        }
+        dfs(board, i + 1, j);
+        dfs(board, i - 1, j);
+        dfs(board, i, j + 1);
+        dfs(board, i, j - 1);
     }
 }
