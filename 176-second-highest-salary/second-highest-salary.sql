@@ -1,6 +1,5 @@
-# Write your MySQL query statement below
 select(
-    Select distinct salary
+    select distinct salary 
     from employee
     order by salary desc
     limit 1 offset 1
